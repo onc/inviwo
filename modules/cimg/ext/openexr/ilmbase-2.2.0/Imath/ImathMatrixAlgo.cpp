@@ -47,7 +47,11 @@
 #include <algorithm>
 
 #if defined(OPENEXR_DLL)
-    #define EXPORT_CONST __declspec(dllexport)
+        #ifdef _WIN32
+            #define EXPORT_CONST __declspec(dllexport)
+        #else
+            #define EXPORT_CONST __attribute__ ((visibility ("default")))
+        #endif
 #else
     #define EXPORT_CONST const
 #endif

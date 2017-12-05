@@ -34,11 +34,21 @@
 
 #if defined(OPENEXR_DLL)
     #if defined(IMATH_EXPORTS)
-	    #define IMATH_EXPORT __declspec(dllexport)
-        #define IMATH_EXPORT_CONST extern __declspec(dllexport)
+        #ifdef _WIN32
+            #define IMATH_EXPORT __declspec(dllexport)
+            #define IMATH_EXPORT_CONST extern __declspec(dllexport)
+        #else
+            #define IMATH_EXPORT __attribute__ ((visibility ("default")))
+            #define IMATH_EXPORT_CONST extern __attribute__ ((visibility ("default")))
+        #endif
     #else
-	    #define IMATH_EXPORT __declspec(dllimport)
-	    #define IMATH_EXPORT_CONST extern __declspec(dllimport)
+        #ifdef _WIN32
+	        #define IMATH_EXPORT __declspec(dllimport)
+	        #define IMATH_EXPORT_CONST extern __declspec(dllimport)
+        #else
+            #define IMATH_EXPORT
+            #define IMATH_EXPORT_CONST 
+        #endif
     #endif
 #else
     #define IMATH_EXPORT

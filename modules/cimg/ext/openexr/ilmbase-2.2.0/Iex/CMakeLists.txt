@@ -7,6 +7,15 @@ ENDIF()
 ADD_LIBRARY ( openexr-iex ${LIB_TYPE}
   IexBaseExc.cpp
   IexThrowErrnoExc.cpp
+  IexBaseExc.h
+  IexMathExc.h
+  IexThrowErrnoExc.h
+  IexErrnoExc.h
+  IexMacros.h
+  Iex.h
+  IexNamespace.h
+  IexExport.h
+  IexForward.h
   )
 
 

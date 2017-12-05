@@ -34,11 +34,21 @@
 
 #if defined(OPENEXR_DLL)
     #if defined(ILMTHREAD_EXPORTS)
-	    #define ILMTHREAD_EXPORT __declspec(dllexport)
-        #define ILMTHREAD_EXPORT_CONST extern __declspec(dllexport)
+        #ifdef _WIN32
+            #define ILMTHREAD_EXPORT __declspec(dllexport)
+            #define ILMTHREAD_EXPORT_CONST const __declspec(dllexport)
+        #else
+            #define ILMTHREAD_EXPORT __attribute__ ((visibility ("default")))
+            #define ILMTHREAD_EXPORT_CONST const __attribute__ ((visibility ("default")))
+        #endif
     #else
-	    #define ILMTHREAD_EXPORT __declspec(dllimport)
-	    #define ILMTHREAD_EXPORT_CONST extern __declspec(dllimport)
+        #ifdef _WIN32
+	        #define ILMTHREAD_EXPORT __declspec(dllimport)
+	        #define ILMTHREAD_EXPORT_CONST const __declspec(dllimport)
+        #else
+            #define ILMTHREAD_EXPORT
+            #define ILMTHREAD_EXPORT_CONST const
+        #endif
     #endif
 #else
     #define ILMTHREAD_EXPORT

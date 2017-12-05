@@ -57,7 +57,7 @@ IEX_INTERNAL_NAMESPACE_HEADER_ENTER
 // Our most basic exception class
 //-------------------------------
 
-class BaseExc: public std::string, public std::exception
+class IEX_EXPORT BaseExc: public std::string, public std::exception
 {
   public:
 

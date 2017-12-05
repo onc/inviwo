@@ -33,11 +33,9 @@ set_target_properties(ticpp PROPERTIES VERSION 0.4 SOVERSION 0.4)
 # Define defintions
 ivw_define_standard_definitions(ticpp ticpp)
 target_compile_definitions(ticpp PRIVATE TIXML_USE_TICPP)
-if(WIN32)
-    if(BUILD_SHARED_LIBS)
-        target_compile_definitions(ticpp PRIVATE BUILD_TICPP_DLL)
-        target_compile_definitions(ticpp INTERFACE TICPP_DLL)
-    endif()
+if(BUILD_SHARED_LIBS)
+    target_compile_definitions(ticpp PRIVATE BUILD_TICPP_DLL)
+    target_compile_definitions(ticpp INTERFACE TICPP_DLL)
 endif()
 
 #--------------------------------------------------------------------

@@ -42,11 +42,22 @@
 
 #if defined(OPENEXR_DLL)
     #if defined(IEX_EXPORTS)
-    #define IEXMATH_EXPORT __declspec(dllexport)
+        #ifdef _WIN32
+            #define IEXMATH_EXPORT __declspec(dllexport)
+            #define IEXMATH_EXPORT_CONST const __declspec(dllexport)
+        #else
+            #define IEXMATH_EXPORT __attribute__ ((visibility ("default")))
+            #define IEXMATH_EXPORT_CONST const __attribute__ ((visibility ("default")))
+        #endif
     #else
-    #define IEXMATH_EXPORT __declspec(dllimport)
+        #ifdef _WIN32
+            #define IEXMATH_EXPORT __declspec(dllimport)
+            #define IEXMATH_EXPORT_CONST const __declspec(dllimport)
+        #else
+            #define IEXMATH_EXPORT
+            #define IEXMATH_EXPORT_CONST const
+        #endif
     #endif
-    #define IEXMATH_EXPORT_CONST
 #else
     #define IEXMATH_EXPORT
     #define IEXMATH_EXPORT_CONST const

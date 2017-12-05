@@ -75,10 +75,10 @@ INCLUDE_DIRECTORIES(${OPENEXR-HALF_INCLUDE_DIR}
 SET (LIB_TYPE STATIC)
 IF (BUILD_SHARED_LIBS)
   # User wants to build Dynamic Libraries, so change the LIB_TYPE variable to CMake keyword 'SHARED'
-  SET (LIB_TYPE SHARED)
-    IF (WIN32)
+  SET (LIB_TYPE SHARED) # Also necessary on UNIX when compiling with -fvisibility=hidden
+    #IF (WIN32)
     ADD_DEFINITIONS(-DOPENEXR_DLL)
-  ENDIF ()
+  #ENDIF ()
 ENDIF ()
 
 IF (USE_ZLIB_WINAPI)

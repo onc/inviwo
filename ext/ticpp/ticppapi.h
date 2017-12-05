@@ -46,7 +46,18 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         #pragma warning( disable : 4251 ) // X needs to have dll-interface to be used by clients of class Y
         #pragma warning( disable : 4275 ) // X is derived from class Y but only X is exported
     #endif
-    
+#else // linux
+    // define BUILD_TICPP_DLL when building TiCPP lib.
+    #ifdef BUILD_TICPP_DLL
+        #define TICPP_API __attribute__ ((visibility ("default")))
+        #define TICPP_EXT
+    #endif
+    // define TICPP_DLL when linking TiCPP lib.
+    #ifdef TICPP_DLL
+        #define TICPP_API
+        #define TICPP_EXT extern
+    #endif
+
 #endif
 
 #ifndef TICPP_API
