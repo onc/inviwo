@@ -46,7 +46,7 @@
         #endif
     #else
         #ifdef _WIN32
-	    #define IEX_EXPORT __declspec(dllimport)
+	        #define IEX_EXPORT __declspec(dllimport)
             #define IEX_EXPORT_CONST const __declspec(dllimport)
         #else
             #define IEX_EXPORT
