@@ -61,7 +61,6 @@ void InviwoModuleLibraryObserver::observe(const std::string& file) {
 
 void InviwoModuleLibraryObserver::fileChanged(const std::string& file) {
     bool reload = false;
-    auto time = filesystem::fileModificationTime(file);
     auto it = observing_.find(file);
     if (it != observing_.end()) {
         auto time = filesystem::fileModificationTime(file);
