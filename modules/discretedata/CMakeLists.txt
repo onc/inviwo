@@ -1,6 +1,6 @@
 #--------------------------------------------------------------------
 # Inviwo discrete data Module
-ivw_module(discretedata)
+ivw_module(DiscreteData)
 
 #--------------------------------------------------------------------
 # Add header files
