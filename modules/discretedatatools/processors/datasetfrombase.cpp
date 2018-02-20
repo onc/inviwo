@@ -35,8 +35,6 @@ namespace inviwo
         addPort(portInDataSet);
         portInDataSet.setOptional(true);
         addProperty(channelName);
-        portInData.onChange ([this]() { if (portInData.hasData()) process(); });
-        portInData.onConnect([this]() { if (portInData.hasData()) process(); });
 
         // Todo: change name on channelName change
     }
