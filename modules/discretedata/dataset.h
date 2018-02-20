@@ -164,7 +164,7 @@ public:
 template <>
 struct DataTraits<DataSet>
 {
-    static std::string classIdentifier() { return "org.inviwo.DISCRETEDATA"; }
+    static std::string classIdentifier() { return "org.inviwo.DiscreteData"; }
     static std::string dataName() { return "DataSet"; }
     static uvec3 colorCode() { return uvec3(255, 144, 1); }
     static Document info(const DataSet& data)
