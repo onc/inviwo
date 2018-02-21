@@ -96,19 +96,19 @@ public:
 
     virtual ind getNumElements() const override;
 
-    /** \brief Indexed point access, free for writing
+    /** \brief Indexed point access, constant
     *   @param index Linear point index
     *   @return Pointer to data, size T[NumComponents]
     */
     const T* operator[] (ind index) const { return get(index); }
 
-    /** \brief Indexed point access, constant
+    /** \brief Indexed point access, mutable
     *   @param index Linear point index
     *   @return Pointer to data, size T[NumComponents]
     */
     T* operator[] (ind index) { return get(index); }
 
-    /** \brief Indexed point access, free for writing, same as []
+    /** \brief Indexed point access, mutable, same as []
     *   NOT THREAD SAFE, use fill instead.
     *   @param index Linear point index
     *   @return Pointer to data, NumComponents many T
