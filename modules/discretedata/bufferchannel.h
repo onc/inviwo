@@ -44,7 +44,7 @@ public:
     */
     BufferChannel(ind numElements, ind numComponents, const std::string& name, GridPrimitive definedOn = GridPrimitive::Vertex)
         : DataChannel<T>(numComponents, name, definedOn)
-        : Buffer(numElements * numComponents) {}
+        , Buffer(numElements * numComponents) {}
 
     /** \brief Direct construction
     *   @param data Raw data, copy values
