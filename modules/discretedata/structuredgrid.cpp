@@ -33,7 +33,9 @@ StructuredGrid::StructuredGrid(GridPrimitive gridDimension, const std::vector<in
     NumGridPrimitives[GridPrimitive::Vertex] = numVerts;
 }
 
-std::vector<ind> sameLevelConnection(ind idxLin, std::vector<ind> index, std::vector<ind> size)
+namespace
+{
+std::vector<ind> sameLevelConnection(const ind idxLin, const std::vector<ind>& index, const std::vector<ind>& size)
 {
     ivwAssert(index.size() == size.size(), "Dimensions of input not matching.");
 
@@ -51,29 +53,42 @@ std::vector<ind> sameLevelConnection(ind idxLin, std::vector<ind> index, std::ve
 
     return neighbors;
 }
-
+}
 
 std::vector<ind> StructuredGrid::getConnections(ind idxLin, GridPrimitive from, GridPrimitive to) const
 {
-    ind idxCutoff = idxLin;
-
-    // nD Index.
-    std::vector<ind> index(NumCellsPerDimension.size(), -1);
-    for (ind dim = 0; dim < NumCellsPerDimension.size(); ++dim)
-    {
-        ind dimSize = NumCellsPerDimension[dim];
-        index[dim] = idxCutoff % dimSize;
-        idxCutoff = (ind)(idxCutoff / dimSize);
-    }
-
     if (from == to && from == GridDimension)
+    {
+        // Linear Index to nD Cell Index.
+        ind idxCutoff = idxLin;
+        std::vector<ind> index(NumCellsPerDimension.size(), -1);
+        for (ind dim = 0; dim < (ind)NumCellsPerDimension.size(); ++dim)
+        {
+            ind dimSize = NumCellsPerDimension[dim];
+            index[dim] = idxCutoff % dimSize;
+            idxCutoff = (ind)(idxCutoff / dimSize);
+        }
         return sameLevelConnection(idxLin, index, NumCellsPerDimension);
+    }
 
     if (from == to && from == GridPrimitive::Vertex)
     {
         std::vector<ind> vertDims;
         for (ind dim : NumCellsPerDimension)
+        {
             vertDims.push_back(dim + 1);
+        }
+
+        // Linear Index to nD Vertex Index.
+        ind idxCutoff = idxLin;
+        std::vector<ind> index(vertDims.size(), -1);
+        for (ind dim = 0; dim < (ind)vertDims.size(); ++dim)
+        {
+            ind dimSize = vertDims[dim];
+            index[dim] = idxCutoff % dimSize;
+            idxCutoff = (ind)(idxCutoff / dimSize);
+        }
+
         return sameLevelConnection(idxLin, index, vertDims);
     }
 

@@ -37,6 +37,7 @@ public:
 public:
     virtual std::vector<ind> getConnections(ind index, GridPrimitive from, GridPrimitive to) const;
 
+//Attributes
 protected:
     std::vector<ind> NumCellsPerDimension;
 };
