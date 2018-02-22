@@ -32,11 +32,11 @@ ConnectionIterator operator-(ind offset, ConnectionIterator& iter)
     return ConnectionIterator(iter.Parent, iter.ToDimension, iter.Connection, iter.ToIndex - offset);
 }
 
-ConnectionIterator inviwo::ConnectionIterator::operator*() const
+ElementIterator inviwo::ConnectionIterator::operator*() const
 {
     ivwAssert(Parent, "No channel to iterate is set.");
     
-    return *this;
+    return ElementIterator(Parent, ToDimension, Connection->at(ToIndex));
 }
 
 ConnectionRange ConnectionIterator::connection(GridPrimitive toType) const
