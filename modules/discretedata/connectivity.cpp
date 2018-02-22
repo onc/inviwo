@@ -31,9 +31,4 @@ ElementRange Connectivity::all(GridPrimitive dim) const
     return ElementRange(dim, this);
 }
 
-ind Connectivity::test()
-{
-    return 42;
-}
-
 } // namespace

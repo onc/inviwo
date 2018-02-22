@@ -80,8 +80,6 @@ public:
     */
     ElementRange all(GridPrimitive dim) const;
 
-    ind test();
-
 // Attributes
 protected:
     /** Highest dimension of GridPrimitives */
