@@ -58,7 +58,7 @@ public:
 // Methods
 public:
     /** \brief Returns the maximal dimension of the grid */
-    GridPrimitive getDimension() { return GridDimension; }
+    GridPrimitive getDimension() const { return GridDimension; }
 
     /** \brief Return the number of elements of the given type
     *   @param elementType Type to get number of
@@ -79,8 +79,6 @@ public:
     *   @param dim Dimension to return the elements of
     */
     ElementRange all(GridPrimitive dim) const;
-
-    ind test();
 
 // Attributes
 protected:
