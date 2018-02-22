@@ -108,6 +108,67 @@ std::vector<ind> StructuredGrid::getConnections(ind idxLin, GridPrimitive from, 
         return vertDims;
     }
 
+    if (from == GridPrimitive::Vertex && to == GridDimension)
+    {
+        //Compute dimensions for vertices
+        std::vector<ind> vertDims;
+        for (ind dim : NumCellsPerDimension)
+        {
+            vertDims.push_back(dim + 1);
+        }
+
+        const ind NumDimensions = vertDims.size();
+
+        // Linear Index to nD Vertex Index.
+        ind idxCutoff = idxLin;
+        std::vector<ind> VertexIndex(vertDims.size(), -1);
+        for(ind dim(0);dim<NumDimensions;dim++)
+        {
+            ind dimSize = vertDims[dim];
+            VertexIndex[dim] = idxCutoff % dimSize;
+            idxCutoff = (ind)(idxCutoff / dimSize);
+        }
+
+        //Prepare neighbors
+        std::vector<ind> CellNeighbors;
+        const ind MaxNeighbors = 1i64<<NumDimensions;
+        CellNeighbors.reserve(MaxNeighbors);
+
+        //Compute neighbors
+        std::vector<ind> CurrentNeighbor;
+        for(ind i(0);i<MaxNeighbors;i++)
+        {
+            //Base index is the vertex index. The same cell index is the upper-right one of the neighbors.
+            CurrentNeighbor = VertexIndex;
+
+            //Generate new neighbor index
+            for(ind d(0);d<NumDimensions;d++)
+            {
+                if (i & (1i64<<d)) CurrentNeighbor[d]--;
+            }
+
+            //Is it in the allowed range? And compute linear index while checking.
+            bool bOk(true);
+            ind CurrentNeighborLinearIndex(0);
+            ind DimensionProduct(1);
+            for(ind d(0);bOk&&d<NumDimensions;d++)
+            {
+                if (CurrentNeighbor[d] < 0 || CurrentNeighbor[d] >= NumCellsPerDimension[d])
+                {
+                    bOk = false;
+                }
+
+                CurrentNeighborLinearIndex += CurrentNeighbor[d] * DimensionProduct;
+                DimensionProduct *= NumCellsPerDimension[d];
+            }
+
+            //If so, let's add it.
+            if (bOk) CellNeighbors.push_back(CurrentNeighborLinearIndex);
+        }
+
+        return CellNeighbors;
+    }
+
     ivwAssert(false, "Not implemented yet.");
     return std::vector<ind>();
 }
