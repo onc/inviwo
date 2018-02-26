@@ -15,6 +15,7 @@
 
 #include "connectionmap.h"
 #include "connectivity.h"
+#include "elementiterator.h"
 
 namespace inviwo
 {
@@ -45,7 +46,7 @@ public:
     ~ConnectionIterator() = default;
 
     /** Dereference to 'get data' */
-    ConnectionIterator operator*() const;
+    ElementIterator operator*() const;
 
     //*** Bidirectional Iteration ***\\
 

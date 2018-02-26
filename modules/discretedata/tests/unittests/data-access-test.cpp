@@ -30,18 +30,13 @@ TEST(AccessingData, Connectivity)
     data.Grid = std::make_shared<StructuredGrid>(GridPrimitive::Volume, std::vector<ind>({4,5,6}));
     std::shared_ptr<Connectivity> grid = data.Grid;
 
-    auto w = grid->test();
-    auto x = grid->all(GridPrimitive::Volume);
-    auto y = x.begin();
-    auto z = *y;
-
     for (ElementIterator cell : grid->all(GridPrimitive::Volume))
     {
         auto c = cell.getIndex();
         auto a = cell.connection(GridPrimitive::Vertex);
         auto b = a.begin();
         // Now, we basically have a GridPrimitive/index object.
-        for (ConnectionIterator vert : cell.connection(GridPrimitive::Vertex))
+        for (ElementIterator vert : cell.connection(GridPrimitive::Vertex))
         {
             //// Iterate over all vertices of the respective cell.
             //// Basically a fromGridPrimitive/toGridPrimitive/fromIndex/toIndex object.
