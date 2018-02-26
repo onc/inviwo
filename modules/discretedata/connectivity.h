@@ -22,6 +22,7 @@ namespace inviwo
 
 
 class ElementRange;
+class ElementIterator;
 
 /** \class Connectivity
     \brief Basis interface of all connectivity types.
@@ -80,6 +81,17 @@ public:
     */
     ElementRange all(GridPrimitive dim) const;
 
+    /** \brief Get the measure (i.e., length, area, volume...) of an element
+    *   @param dim Dimension of element (edge, face, volume...)
+    *   @Param index Index of respective element type
+    */
+    virtual double getPrimitiveMeasure(GridPrimitive dim, ind index) const { return -1; }
+
+    /** \brief Get the measure (i.e., length, area, volume...) of an element
+    *   @param element Element to get measure of
+    */
+    virtual double getPrimitiveMeasure(ElementIterator& element) const { return -1; }
+
 // Attributes
 protected:
     /** Highest dimension of GridPrimitives */
@@ -94,3 +106,5 @@ public:
 };
 
 } // namespace
+
+#include <discretedata/elementiterator.h>

@@ -14,6 +14,8 @@
 
 namespace inviwo
 {
+namespace util
+{
 
 /** See std::hash_combine implementation from Boost
 */
@@ -39,4 +41,19 @@ struct PairHash
     }
 };
 
+inline double tetrahedronVolume(double corners[3][4])
+{
+    glm::mat4 tet;
+    for (int corner = 0; corner < 4; ++corner)
+    {
+        for (int scalar = 0; scalar < 3; ++scalar)
+            tet[corner][scalar] = corners[corner][scalar];
+        tet[corner][3] = 1;
+    }
+
+    double vol = glm::determinant(tet);
+    return abs(vol);
+}
+
+} // namespace util
 } // namespace

@@ -6,6 +6,7 @@ ivw_module(DiscreteDataTools)
 # Add header files
 set(HEADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/ports/datasetport.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/computegridmeasure.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/datasetfrombase.h
 )
 #~ ivw_group("Header Files" ${HEADER_FILES})
@@ -13,6 +14,7 @@ set(HEADER_FILES
 #--------------------------------------------------------------------
 # Add source files
 set(SOURCE_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/computegridmeasure.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/datasetfrombase.cpp
 )
 ivw_group("Sources" ${SOURCE_FILES} ${HEADER_FILES})

@@ -72,7 +72,7 @@ protected:
     mutable std::unordered_map
         < std::pair<GridPrimitive, GridPrimitive>   // Hash by in and out GridPrimitive type
         , std::shared_ptr<const ConnectionMap>    // Save shared ConnectionMap between these dimensions
-        , PairHash<GridPrimitive, GridPrimitive>>   // Hashing for std::pair is not in the SDL, see util.h
+        , util::PairHash<GridPrimitive, GridPrimitive>>   // Hashing for std::pair is not in the SDL, see util.h
             Connections;
 };
 

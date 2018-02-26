@@ -15,6 +15,8 @@
 namespace inviwo
 {
 
+    class ElementIterator;
+
 /** \class StructuredGrid
     \brief A curvilinear grid in nD
 
@@ -33,13 +35,63 @@ public:
 
     ind getNumCellsInDimension(ind dim) const;
 
+    virtual double getPrimitiveMeasure(GridPrimitive dim, ind index) const override;
+
 // Methods
 public:
     virtual std::vector<ind> getConnections(ind index, GridPrimitive from, GridPrimitive to) const;
 
 //Attributes
 protected:
+    template<typename T>
+    double computeHexVolume(ind index) const;
+
+protected:
     std::vector<ind> NumCellsPerDimension;
 };
+
+
+template<typename T>
+double StructuredGrid::computeHexVolume(ind index) const
+{
+    // Work with respective type
+    std::shared_ptr<const DataChannel<T>> doubleVertices = std::dynamic_pointer_cast<const DataChannel<T>, const Channel>(Vertices);
+    if (!doubleVertices)
+        return -1;
+
+    // Get all corner points.
+    auto corners = getConnections(index, GridPrimitive::Volume, GridPrimitive::Vertex);
+    IVW_ASSERT(corners.size() == 8, "Not a hexahedron.");
+
+    // Tetrahedron corners
+    static constexpr ind tetrahedra[4][5] =
+        { {0, 3, 5, 6}
+        , {0, 5, 3, 1}
+        , {0, 6, 5, 4}
+        , {0, 3, 6, 2}
+        , {3, 5, 6, 6} };
+
+    // Setup variables for measure calculation
+    double measure = 0;
+    double cornerMatrix[3][4];
+    T vertex[3];
+
+    // Calculate measure of 5 tetrahedra
+    for (ind tet = 0; tet < 5; ++tet)
+    {
+        for (ind corner = 0; corner < 4; ++corner)
+        {
+            ind cornerIndex = corners[tetrahedra[tet][corner]];
+            doubleVertices->fill(vertex, cornerIndex);
+            for (ind dim = 0; dim < 3; ++dim)
+                cornerMatrix[corner][dim] = double(vertex[dim]);
+        }
+        
+        // Compute measure and sum
+        measure += inviwo::util::tetrahedronVolume(cornerMatrix);
+    }
+
+    return measure;
+}
 
 } // namespace

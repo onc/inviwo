@@ -10,6 +10,8 @@
 
 #include "structuredgrid.h"
 #include "analyticchannel.h"
+#include "elementiterator.h"
+#include "util.h"
 
 namespace inviwo
 {
@@ -43,15 +45,22 @@ std::vector<ind> sameLevelConnection(const ind idxLin, const std::vector<ind>& i
     ind dimensionProduct = 1;
     for (int dim = 0; dim < size.size(); ++dim)
     {
-        if (index[dim] > 0)
-            neighbors.push_back(idxLin - dimensionProduct);
-        if (index[dim] < size[dim]-1)
-            neighbors.push_back(idxLin + dimensionProduct);
+        ivwAssert(index.size() == size.size(), "Dimensions of input not matching.");
 
-        dimensionProduct *= size[dim];
+        std::vector<ind> neighbors;
+        ind dimensionProduct = 1;
+        for (int dim = 0; dim < size.size(); ++dim)
+        {
+            if (index[dim] > 0)
+                neighbors.push_back(idxLin - dimensionProduct);
+            if (index[dim] < size[dim] - 1)
+                neighbors.push_back(idxLin + dimensionProduct);
+
+            dimensionProduct *= size[dim];
+        }
+
+        return neighbors;
     }
-
-    return neighbors;
 }
 }
 
@@ -94,6 +103,7 @@ std::vector<ind> StructuredGrid::getConnections(ind idxLin, GridPrimitive from, 
 
     if (from == GridDimension && to == GridPrimitive::Vertex)
     {
+        // Have indices in "ascending order", i.e., indices always grow.
         ind dimensionProduct = 1;
         std::vector<ind> vertDims;
         vertDims.push_back(idxLin);
@@ -102,7 +112,7 @@ std::vector<ind> StructuredGrid::getConnections(ind idxLin, GridPrimitive from, 
             ind numVerts = vertDims.size();
             for (ind idxPrev = 0; idxPrev < numVerts; ++idxPrev)
                 vertDims.push_back(vertDims[idxPrev] + dimensionProduct);
-            dimensionProduct *= NumCellsPerDimension[dim];
+            dimensionProduct *= NumCellsPerDimension[dim] + 1;
         }
 
         return vertDims;
@@ -173,5 +183,66 @@ std::vector<ind> StructuredGrid::getConnections(ind idxLin, GridPrimitive from, 
     return std::vector<ind>();
 }
 
+ind StructuredGrid::getNumCellsInDimension(ind dim) const
+{
+    IVW_ASSERT(NumCellsPerDimension[dim] >= 0, "Number of elements not known yet.");
+    return NumCellsPerDimension[dim];
+}
+
+double StructuredGrid::getPrimitiveMeasure(GridPrimitive dim, ind index) const
+{
+    if (!this->Vertices)
+        return -1;
+
+    // Only implemented 3D bodies so far.
+    if (dim != GridPrimitive::Volume)
+        return -1;
+
+    double measure = -1;
+
+    // TODO: Make this kind of code obsolete or at least compact.
+    switch (Vertices->getDataFormatId())
+    {
+    case DataFormatId::Float16:
+        measure = computeHexVolume<float>(index);
+        break;
+    case DataFormatId::Float32:
+        measure = computeHexVolume<glm::f32>(index);
+        break;
+    case DataFormatId::Float64:
+        measure = computeHexVolume<glm::f64>(index);
+        break;
+    case DataFormatId::Int8:
+        measure = computeHexVolume<glm::i8 >(index);
+        break;
+    case DataFormatId::Int16:
+        measure = computeHexVolume<glm::i16>(index);
+        break;
+    case DataFormatId::Int32:
+        measure = computeHexVolume<glm::i32>(index);
+        break;
+    case DataFormatId::Int64:
+        measure = computeHexVolume<glm::i64>(index);
+        break;
+    case DataFormatId::UInt8:
+        measure = computeHexVolume<glm::u8 >(index);
+        break;
+    case DataFormatId::UInt16:
+        measure = computeHexVolume<glm::u16>(index);
+        break;
+    case DataFormatId::UInt32:
+        measure = computeHexVolume<glm::u32>(index);
+        break;
+    case DataFormatId::UInt64:
+        measure = computeHexVolume<glm::u64>(index);
+        break;
+
+    default:
+        LogWarn("Data type not supported. Edit " << __FILE__);
+        break;
+    }
+
+    return measure;
+}
 } // namespace
 
