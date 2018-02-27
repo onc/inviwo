@@ -146,6 +146,22 @@ public:
     /** Default copy shares Channels and Connectivity */
     DataSet(const DataSet& copy) = default;
 
+//Methods
+public:
+    ///Returns a const typed shared pointer to the grid, if casting is possible.
+    template<typename T>
+    std::shared_ptr<const T> getGrid() const
+    {
+        return std::dynamic_pointer_cast<const T, const Connectivity>(Grid);
+    }
+
+    ///Returns a typed shared pointer to the grid, if casting is possible.
+    template<typename T>
+    std::shared_ptr<T> getGrid()
+    {
+        return std::dynamic_pointer_cast<T, Connectivity>(Grid);
+    }
+
 // Attributes
 public:
 

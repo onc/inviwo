@@ -41,7 +41,7 @@ struct PairHash
     }
 };
 
-inline double tetrahedronVolume(double corners[3][4])
+inline double tetrahedronVolume(double corners[4][3])
 {
     glm::mat4 tet;
     for (int corner = 0; corner < 4; ++corner)

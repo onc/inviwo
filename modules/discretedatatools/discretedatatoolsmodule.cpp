@@ -11,7 +11,8 @@
 #include <discretedatatools/discretedatatoolsmodule.h>
 #include <discretedatatools/processors/datasetfrombase.h>
 #include <discretedatatools/processors/computegridmeasure.h>
-#include <discretedatatools/processors/meshfromdataset.h>
+//#include <discretedatatools/processors/meshfromdataset.h>
+#include <discretedatatools/processors/volumefromdataset.h>
 
 namespace inviwo
 {
@@ -26,6 +27,7 @@ DiscreteDataToolsModule::DiscreteDataToolsModule(InviwoApplication* app) : Inviw
     // Processors
     registerProcessor<DataSetFromVolume>();
     registerProcessor<ComputeGridMeasure>();
+    registerProcessor<VolumeFromDataSet>();
     
     // Properties
 

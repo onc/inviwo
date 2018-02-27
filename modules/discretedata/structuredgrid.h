@@ -64,27 +64,29 @@ double StructuredGrid::computeHexVolume(ind index) const
     IVW_ASSERT(corners.size() == 8, "Not a hexahedron.");
 
     // Tetrahedron corners
-    static constexpr ind tetrahedra[4][5] =
+    static constexpr ind tetrahedra[5][4] =
         { {0, 3, 5, 6}
         , {0, 5, 3, 1}
         , {0, 6, 5, 4}
         , {0, 3, 6, 2}
-        , {3, 5, 6, 6} };
+        , {3, 5, 6, 7} };
 
     // Setup variables for measure calculation
     double measure = 0;
-    double cornerMatrix[3][4];
+    double cornerMatrix[4][3];
     T vertex[3];
 
     // Calculate measure of 5 tetrahedra
-    for (ind tet = 0; tet < 5; ++tet)
+    for (ind tet = 0; tet < 5; tet++)
     {
-        for (ind corner = 0; corner < 4; ++corner)
+        for (ind corner = 0; corner < 4; corner++)
         {
             ind cornerIndex = corners[tetrahedra[tet][corner]];
             doubleVertices->fill(vertex, cornerIndex);
             for (ind dim = 0; dim < 3; ++dim)
+            {
                 cornerMatrix[corner][dim] = double(vertex[dim]);
+            }
         }
         
         // Compute measure and sum

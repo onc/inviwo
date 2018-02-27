@@ -45,22 +45,15 @@ std::vector<ind> sameLevelConnection(const ind idxLin, const std::vector<ind>& i
     ind dimensionProduct = 1;
     for (int dim = 0; dim < size.size(); ++dim)
     {
-        ivwAssert(index.size() == size.size(), "Dimensions of input not matching.");
+        if (index[dim] > 0)
+            neighbors.push_back(idxLin - dimensionProduct);
+        if (index[dim] < size[dim]-1)
+            neighbors.push_back(idxLin + dimensionProduct);
 
-        std::vector<ind> neighbors;
-        ind dimensionProduct = 1;
-        for (int dim = 0; dim < size.size(); ++dim)
-        {
-            if (index[dim] > 0)
-                neighbors.push_back(idxLin - dimensionProduct);
-            if (index[dim] < size[dim] - 1)
-                neighbors.push_back(idxLin + dimensionProduct);
-
-            dimensionProduct *= size[dim];
-        }
-
-        return neighbors;
+        dimensionProduct *= size[dim];
     }
+
+    return neighbors;
 }
 }
 

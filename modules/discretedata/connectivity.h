@@ -90,7 +90,7 @@ public:
     /** \brief Get the measure (i.e., length, area, volume...) of an element
     *   @param element Element to get measure of
     */
-    virtual double getPrimitiveMeasure(ElementIterator& element) const { return -1; }
+    virtual double getPrimitiveMeasure(ElementIterator& element) const;
 
 // Attributes
 protected:

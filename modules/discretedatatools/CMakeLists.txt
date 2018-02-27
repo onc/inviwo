@@ -8,6 +8,7 @@ set(HEADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/ports/datasetport.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/computegridmeasure.h
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/datasetfrombase.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumefromdataset.h
 )
 #~ ivw_group("Header Files" ${HEADER_FILES})
 
@@ -16,6 +17,7 @@ set(HEADER_FILES
 set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/computegridmeasure.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/processors/datasetfrombase.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/processors/volumefromdataset.cpp
 )
 ivw_group("Sources" ${SOURCE_FILES} ${HEADER_FILES})
 

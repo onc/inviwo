@@ -31,4 +31,9 @@ ElementRange Connectivity::all(GridPrimitive dim) const
     return ElementRange(dim, this);
 }
 
+double inviwo::Connectivity::getPrimitiveMeasure(ElementIterator& element) const
+{
+    return getPrimitiveMeasure(element.getType(), element.getIndex());
+}
+
 } // namespace
