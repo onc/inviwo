@@ -43,16 +43,11 @@ struct PairHash
 
 inline double tetrahedronVolume(double corners[4][3])
 {
-    glm::mat4 tet;
-    for (int corner = 0; corner < 4; ++corner)
-    {
-        for (int scalar = 0; scalar < 3; ++scalar)
-            tet[corner][scalar] = corners[corner][scalar];
-        tet[corner][3] = 1;
-    }
+    const glm::dvec3 a(corners[0][0] - corners[1][0], corners[0][1] - corners[1][1], corners[0][2] - corners[1][2]);
+    const glm::dvec3 b(corners[0][0] - corners[2][0], corners[0][1] - corners[2][1], corners[0][2] - corners[2][2]);
+    const glm::dvec3 c(corners[0][0] - corners[3][0], corners[0][1] - corners[3][1], corners[0][2] - corners[3][2]);
 
-    double vol = glm::determinant(tet);
-    return abs(vol);
+    return fabs(glm::dot(glm::cross(a, b), c) / 6.0);
 }
 
 } // namespace util
