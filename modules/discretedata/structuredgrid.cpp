@@ -96,19 +96,66 @@ std::vector<ind> StructuredGrid::getConnections(ind idxLin, GridPrimitive from, 
 
     if (from == GridDimension && to == GridPrimitive::Vertex)
     {
-        // Have indices in "ascending order", i.e., indices always grow.
-        ind dimensionProduct = 1;
-        std::vector<ind> vertDims;
-        vertDims.push_back(idxLin);
-        for (int dim = 0; dim < GridDimension; ++dim)
+        //Prepare corners
+        const ind NumDimensions = NumCellsPerDimension.size();
+        const ind NumCorners = 1i64<<NumDimensions;
+        std::vector<ind> VertexCorners(NumCorners);
+
+        //Vertex Strides - how much to add to the linear index to go forward by 1 in each dimension
+        std::vector<ind> VStrides(NumDimensions);
+        ind DimProduct(1);
+        for(ind dim(0);dim<NumDimensions;dim++)
         {
-            ind numVerts = vertDims.size();
-            for (ind idxPrev = 0; idxPrev < numVerts; ++idxPrev)
-                vertDims.push_back(vertDims[idxPrev] + dimensionProduct);
-            dimensionProduct *= NumCellsPerDimension[dim] + 1;
+            VStrides[dim] = DimProduct;
+            DimProduct *= (NumCellsPerDimension[dim] + 1);
         }
 
-        return vertDims;
+        // Linear Index to nD Cell Index.
+        ind IdxRemainder = idxLin;
+        std::vector<ind> CellIndex(NumDimensions, -1);
+        for (ind dim(0);dim<NumDimensions;dim++)
+        {
+            CellIndex[dim] = IdxRemainder % NumCellsPerDimension[dim];
+            IdxRemainder = (ind)(IdxRemainder / NumCellsPerDimension[dim]);
+        }
+
+        //The given cell index is also the index of its lower-left-front corner vertex
+        //Let's compute the linear index for this vertex
+        ind LowerLeftFrontVertexLinearIndex = CellIndex[0];
+        for (ind dim(1);dim<NumDimensions;dim++)
+        {
+            LowerLeftFrontVertexLinearIndex += CellIndex[dim] * VStrides[dim];
+        }
+
+        VertexCorners[0] = LowerLeftFrontVertexLinearIndex;
+        for(ind i(1);i<NumCorners;i++)
+        {
+            //Base is the lower-left-front corner.
+            VertexCorners[i] = LowerLeftFrontVertexLinearIndex;
+
+            //Add strides to the lower-left-front corner.
+            for(ind d(0);d<NumDimensions;d++)
+            {
+                if (i & (1i64<<d)) VertexCorners[i] += VStrides[d];
+            }
+        }
+
+        return VertexCorners;
+
+        //// BUG: The initial linear index needs to be converted to a linear index of a vertex!
+        //// Otherwise, this code yields the same order as above! One may use this as well, but then resize at the beginning.
+        //// Have indices in "ascending order", i.e., indices always grow.
+        //ind dimensionProduct = 1;
+        //std::vector<ind> vertDims;
+        //vertDims.push_back(idxLin);
+        //for (int dim = 0; dim < GridDimension; ++dim)
+        //{
+        //    ind numVerts = vertDims.size();
+        //    for (ind idxPrev = 0; idxPrev < numVerts; ++idxPrev)
+        //        vertDims.push_back(vertDims[idxPrev] + dimensionProduct);
+        //    dimensionProduct *= NumCellsPerDimension[dim] + 1;
+        //}
+        //return vertDims;
     }
 
     if (from == GridPrimitive::Vertex && to == GridDimension)
