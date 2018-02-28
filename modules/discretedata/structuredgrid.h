@@ -66,10 +66,10 @@ double StructuredGrid::computeHexVolume(ind index) const
     // Tetrahedron corners
     static constexpr ind tetrahedra[5][4] =
         { {0, 3, 5, 6}
-        , {0, 5, 3, 1}
-        , {0, 6, 5, 4}
-        , {0, 3, 6, 2}
-        , {3, 5, 6, 7} };
+        , {1, 0, 3, 5}
+        , {0, 2, 6, 3}
+        , {5, 3, 6, 7}
+        , {4, 5, 6, 0} };
 
     // Setup variables for measure calculation
     double measure = 0;
