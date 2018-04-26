@@ -33,7 +33,7 @@ struct ChannelCompare
 // Map used for storing and querying channels by name and GridPrimitive type.
 typedef std::map
     < std::pair<std::string, GridPrimitive> // Hashing by both name and GridPrimitive type
-    , SharedChannel                     // Shared channels, type information only as meta property
+    , SharedConstChannel                     // Shared channels, type information only as meta property
     , ChannelCompare>                   // Lesser operator on string-Primitve pairs
         BaseChannelMap;
 
@@ -57,7 +57,7 @@ public:
     /** Add a new channel to the set
     *   @param channel Shared pointer to data, remains valid
     */
-    void addChannel(SharedChannel channel);
+    void addChannel(SharedConstChannel channel);
 
     /** Returns the first channel from an unordered list.
     */
@@ -74,12 +74,6 @@ public:
     */
     SharedConstChannel getChannel(const std::string& name, GridPrimitive definedOn = GridPrimitive::Vertex) const;
 
-    /** Returns the specified channel, returns first instance found
-    *   @param name Unique name of requested channel
-    *   @param definedOn GridPrimitive type the channel is defined on, default 0D vertices
-    */
-    SharedChannel getChannel(const std::string& name, GridPrimitive definedOn = GridPrimitive::Vertex);
-
     /** Returns the specified channel if it is in the desired format, returns first instance found
     *   @param name Unique name of requested channel
     *   @param definedOn GridPrimitive type the channel is defined on, default 0D vertices
@@ -92,14 +86,7 @@ public:
     *   @param definedOn GridPrimitive type the channel is defined on, default 0D vertices
     */
     template <typename T>
-    std::shared_ptr<DataChannel<T>> getChannel(const std::string& name, GridPrimitive definedOn = GridPrimitive::Vertex);
-
-    /** Returns the specified buffer, converts to buffer if needed
-    *   @param name Unique name of requested buffer
-    *   @param definedOn GridPrimitive type the channel is defined on, default 0D vertices
-    */
-    template<typename T>
-    std::shared_ptr<BufferChannel<T>> getAsBuffer(const std::string& name, GridPrimitive definedOn = GridPrimitive::Vertex);
+    std::shared_ptr<const DataChannel<T>> getChannel(const char* name, GridPrimitive definedOn = GridPrimitive::Vertex) const;
 
     /** Returns the specified buffer, converts to buffer or copies
     *   @param name Unique name of requested buffer
@@ -113,7 +100,7 @@ public:
     *   @param channel Shared pointer to data
     *   @return Successfull - channel was saved in the set indeed
     */
-    bool removeChannel(SharedChannel channel);
+    bool removeChannel(SharedConstChannel channel);
 
     /** Number of channels currently held
     */
@@ -187,6 +174,12 @@ struct DataTraits<DataSet>
     {
         std::ostringstream oss;
         oss << "Data set with " << data.Channels.numChannels() << " channels.";
+        if (!data.Channels.ChannelSet.empty())
+        for (auto& channel : data.Channels.ChannelSet)
+        {
+            oss << "      " << channel.first.first << '[' << channel.second->getNumComponents() << "][" << channel.second->getNumElements() << ']'
+                << "(Dim " << channel.first.second << ')';
+        }
         Document doc;
         doc.append("p", oss.str());
         return doc;

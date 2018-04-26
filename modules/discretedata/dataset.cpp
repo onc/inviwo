@@ -22,7 +22,7 @@ SharedChannel DataChannelMap::addChannel(Channel* const channel)
     return sharedChannel;
 }
 
-void DataChannelMap::addChannel(SharedChannel sharedChannel)
+void DataChannelMap::addChannel(SharedConstChannel sharedChannel)
 {
         ChannelSet.insert
             ( std::make_pair
@@ -32,7 +32,7 @@ void DataChannelMap::addChannel(SharedChannel sharedChannel)
                 , sharedChannel ));
 }
 
-bool DataChannelMap::removeChannel(SharedChannel channel)
+bool DataChannelMap::removeChannel(SharedConstChannel channel)
 {
     return ChannelSet.erase(std::make_pair(channel->getName(), channel->getGridPrimitiveType()));
 }
@@ -43,15 +43,6 @@ SharedConstChannel DataChannelMap::getFirstChannel() const
 
     if (it == ChannelSet.end()) return SharedConstChannel();
 
-    return std::const_pointer_cast<const Channel, Channel>(it->second);
-}
-
-SharedChannel DataChannelMap::getChannel(const std::string& name, const GridPrimitive definedOn)
-{
-    auto it = ChannelSet.find(std::make_pair(name, definedOn));
-    
-    if (it == ChannelSet.end())
-        return SharedChannel();
     return it->second;
 }
 
@@ -61,7 +52,7 @@ SharedConstChannel DataChannelMap::getChannel(const std::string& name, const Gri
 
     if (it == ChannelSet.end()) return SharedConstChannel();
 
-    return std::const_pointer_cast<const Channel, Channel>(it->second);
+    return it->second;
 }
 
 } // namespace
