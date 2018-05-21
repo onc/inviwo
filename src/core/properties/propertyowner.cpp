@@ -304,7 +304,7 @@ void PropertyOwner::invokeEvent(Event* event) {
     }
 }
 
-InviwoApplication* PropertyOwner::getInviwoApplication() {
+InviwoApplication* PropertyOwner::getInviwoApplication() const {
     return util::getInviwoApplication(getProcessor());
 }
 

@@ -58,7 +58,7 @@ std::string Settings::getFileName() const {
     return filesystem::getPath(PathType::Settings, "/" + filename + ".ivs", true);
 }
 
-InviwoApplication* Settings::getInviwoApplication() {
+InviwoApplication* Settings::getInviwoApplication() const {
     return app_;
 }
 

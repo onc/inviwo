@@ -420,19 +420,19 @@ namespace util {
 
 InviwoApplication* getInviwoApplication() { return InviwoApplication::getPtr(); }
 
-InviwoApplication* getInviwoApplication(ProcessorNetwork* network) {
+InviwoApplication* getInviwoApplication(const ProcessorNetwork* network) {
     return network ? network->getApplication() : nullptr;
 }
 
-InviwoApplication* getInviwoApplication(Processor* processor) {
+InviwoApplication* getInviwoApplication(const Processor* processor) {
     return processor ? getInviwoApplication(processor->getNetwork()) : nullptr;
 }
 
-InviwoApplication* getInviwoApplication(Property* property) {
+InviwoApplication* getInviwoApplication(const Property* property) {
     return property ? getInviwoApplication(property->getOwner()) : nullptr;
 }
 
-InviwoApplication* getInviwoApplication(PropertyOwner* owner) {
+InviwoApplication* getInviwoApplication(const PropertyOwner* owner) {
     return owner ? owner->getInviwoApplication() : nullptr;
 }
 

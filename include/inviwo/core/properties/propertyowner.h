@@ -101,7 +101,7 @@ public:
 
     virtual void invokeEvent(Event* event) override;
 
-    virtual InviwoApplication* getInviwoApplication();
+    virtual InviwoApplication* getInviwoApplication() const;
 protected:
     // Add the properties belonging the the property owner
     // PropertyOwner do not assume owner ship here since in the most common case these are
