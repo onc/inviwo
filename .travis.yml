@@ -6,7 +6,7 @@ notifications:
 matrix:
   include:
     # XCode 9.4
-    - env: COMPILER=clang++
+    - env: COMPILER=clang++ BUILD_TYPE=Release
       os: osx
       osx_image: xcode9.4
       compiler: clang
@@ -58,3 +58,15 @@ before_script:
 
 script:
   - cmake --build . --target inviwo -- -j${JOBS}
+
+before_deploy:
+      # Set up git user name and tag this commit
+      - git config --local user.name "YOUR GIT USER NAME"
+      - git config --local user.email "YOUR GIT USER EMAIL"
+      - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
+
+deploy:
+      provider: releases
+      api_key: "UJyTJkB0WlVsL10QN5F3sQ"
+      file: "build/bin/Release/inviwo.app"
+      skip_cleanup: true
