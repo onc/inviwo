@@ -13,7 +13,7 @@ matrix:
 
 before_install:
   - '[ "$TRAVIS_OS_NAME" != linux ] || sudo apt-get -qy update'
-  - '[ "$TRAVIS_OS_NAME" != osx ] || brew update'
+  - '[ "$TRAVIS_OS_NAME" != osx ] || brew update && brew upgrade'
 
 install:
   # Set the ${CXX} variable properly
