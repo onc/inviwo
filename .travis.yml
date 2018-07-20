@@ -57,4 +57,4 @@ before_script:
   - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
 
 script:
-  - cmake --build . -- -j${JOBS}
+  - cmake --build . --target inviwo -- -j${JOBS}
