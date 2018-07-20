@@ -46,7 +46,8 @@ install:
   # Install Qt
   ############################################################################
   - '[ "$TRAVIS_OS_NAME" != osx ] || brew install qt && export PATH="/usr/local/opt/qt/bin:$PATH"'
-  - '[ "$TRAVIS_OS_NAME" != osx ] || brew install hdf5 --with-cxx --c++11'
+  - '[ "$TRAVIS_OS_NAME" != osx ] || brew install python3'
+  - '[ "$TRAVIS_OS_NAME" != osx ] || brew install hdf5'
 
 before_script:
   # have CMake to generate build files
