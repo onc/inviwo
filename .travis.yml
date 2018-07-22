@@ -1,36 +1,27 @@
 language: cpp
 sudo: false
+
 notifications:
   email: false
 
 matrix:
   include:
-    # XCode 9.4
-    - env: COMPILER=clang++ BUILD_TYPE=Release
-      os: osx
-      osx_image: xcode9.4
-      compiler: clang
+  - env: COMPILER=clang++ BUILD_TYPE=Release BUILD_TARGET=inviwo
+    os: osx
+    osx_image: xcode9.4
+    compiler: clang
 
 before_install:
   - '[ "$TRAVIS_OS_NAME" != linux ] || sudo apt-get -qy update'
   - '[ "$TRAVIS_OS_NAME" != osx ] || brew update && brew upgrade'
 
 install:
-  # Set the ${CXX} variable properly
   - export CXX=${COMPILER}
-  - ${CXX} --version
-
-  # Travis machines have 2 cores
+  - "${CXX} --version"
   - JOBS=2
-
-  # Dependencies required by the CI are installed in ${TRAVIS_BUILD_DIR}/deps/
   - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
   - mkdir -p "${DEPS_DIR}"
   - cd "${DEPS_DIR}"
-
-  ############################################################################
-  # Install a recent CMake (unless already installed on OS X)
-  ############################################################################
   - CMAKE_VERSION=3.11.4
   - |
     if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
@@ -41,32 +32,24 @@ install:
       brew install cmake || brew upgrade cmake
     fi
   - cmake --version
-
-  ############################################################################
-  # Install Qt
-  ############################################################################
   - '[ "$TRAVIS_OS_NAME" != osx ] || brew install qt && export PATH="/usr/local/opt/qt/bin:$PATH"'
   - '[ "$TRAVIS_OS_NAME" != osx ] || brew install python3'
-  # - '[ "$TRAVIS_OS_NAME" != osx ] || brew install hdf5'
 
 before_script:
-  # have CMake to generate build files
   - cd "${TRAVIS_BUILD_DIR}"
   - git submodule update --init --recursive
   - mkdir build && cd build
   - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
 
 script:
-  - cmake --build . --target inviwo -- -j${JOBS}
-
-before_deploy:
-      # Set up git user name and tag this commit
-      - git config --local user.name "YOUR GIT USER NAME"
-      - git config --local user.email "YOUR GIT USER EMAIL"
-      - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
+  - cmake --build . --target ${BUILD_TARGET} -- -j${JOBS}
 
 deploy:
-      provider: releases
-      api_key: "UJyTJkB0WlVsL10QN5F3sQ"
-      file: "build/bin/Release/inviwo.app"
-      skip_cleanup: true
+  provider: releases
+  api_key:
+    secure: HWgj/X81zqS9K5sIAzCZ4c7E3uUUqYdKMfPQY7IcvXrI4IuZ1hrybfE6TZCze5Ogy5OCkFDBMmbLZMiCYWJ74MN9brTuXc4PCbJULqr19MgdvGBDLOBI3q8BLFW43evPgW9++zshBlcgOVZkrI4qxdY2MbwnChEVd70r6Ai+0L8ityGjHenEZ2DmbFhkrnCPXSHMqUVFJqZuPdnGkb4AqL7MQ8fWfcoC2nrb0SR99mVaqN9Xj7hdXlqAfHqM0BjIy08saXVo40ZRqq4p+q0pUIoG7e0ttL/0CIdt+oG8YwQxdy4ETwQ8udRdkyNhA/X1GKkIc4T5d2Off7jbQxkawPHiwa6poxV0hhgU97BPT3rHiEnCSqLJCZSZ4/ScS78DJ0hkdte2Qg8Pa04+plAB81n6IWNviF1gdEU89LdC9xdJIUO2+J1qGlgAIT9Me+S4wCx6Hb/tbObrt1nD6YJn5qymP8EwpGNc12InM2xBYhcT9tAKSsebqz2XZSZkx5NHKTqzNu0wpQOimaQfw/EvddK73xZvIMbmFOerpSVNzw4BQHAFgeDsoPhea7/He6i5OZBo+DZmo3KiWKaRBZqbFy/7tk8KNwRf6Jj/gZtxJLU3w2gml+Rd4nqwCuxHZrIbCaIUDFgAVn8TtCn+01w3G5beMGtgMMO/rf6MZg/Rufs=
+  file: build/bin/inviwo.app
+  on:
+    repo: onc/inviwo
+    tags: true
+    condition: '"$TRAVIS_OS_NAME" == osx'
