@@ -33,6 +33,7 @@ install:
     fi
   - cmake --version
   - '[ "$TRAVIS_OS_NAME" != osx ] || brew install qt && export PATH="/usr/local/opt/qt/bin:$PATH"'
+  - '[ "$TRAVIS_OS_NAME" != osx ] || brew install hdf5'
   - '[ "$TRAVIS_OS_NAME" != osx ] || brew upgrade python'
 
 before_script:
