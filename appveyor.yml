@@ -8,6 +8,9 @@ platform:
 configuration:
   - Release
 
+init:
+  - set PATH=C:\Qt\5.11.1\msvc2017_64;%PATH%
+
 install:
     - git submodule update --init --recursive
 
