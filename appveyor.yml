@@ -34,5 +34,4 @@ deploy:
   draft: false                     # tell AppVeyor to create a “draft” release so you can perform any final checks before making it public.
   prerelease: false
   on:
-    branch: master                 # release from master branch only
     appveyor_repo_tag: true        # deploy on tag push only
