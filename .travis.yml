@@ -36,6 +36,7 @@ install:
   - '[ "$TRAVIS_OS_NAME" != osx ] || brew install python3'
 
 before_script:
+  - find /usr/local/opt/python3/Frameworks/Python.framework/Versions -iname '*.app' | xargs rm -rf
   - cd "${TRAVIS_BUILD_DIR}"
   - git submodule update --init --recursive
   - mkdir build && cd build
