@@ -6,7 +6,7 @@ notifications:
 
 matrix:
   include:
-  - env: COMPILER=clang++ BUILD_TYPE=Release BUILD_TARGET=inviwo
+  - env: COMPILER=clang++ BUILD_TYPE=Release BUILD_TARGET=package
     os: osx
     osx_image: xcode9.4
     compiler: clang
@@ -39,7 +39,8 @@ before_script:
   - cd "${TRAVIS_BUILD_DIR}"
   - git submodule update --init --recursive
   - mkdir build && cd build
-  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DIVW_PACKAGE_PROJECT=ON -DIVW_PACKAGE_INSTALLER=ON -DIVW_UNITTESTS=OFF -DIVW_UNITTESTS_RUN_ON_BUILD=OFF
+  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DIVW_PACKAGE_PROJECT=ON -DIVW_PACKAGE_INSTALLER=ON -DIVW_UNITTESTS=OFF -DIVW_UNITTESTS_RUN_ON_BUILD=OFF
 
 script:
   - cmake --build . --target ${BUILD_TARGET} -- -j${JOBS}
