@@ -24,14 +24,14 @@ build:
   parallel: true
   project: $(APPVEYOR_BUILD_FOLDER)\build\PACKAGE.vcxproj
 
-deploy:
-  release: inviwo-v$(appveyor_build_version)
-  description: 'Release description'
-  provider: GitHub
-  auth_token:
-    secure: VuweHWHk/EiUGGXnRmahl1KSF8EzGKsWDsdk1TD7OPvTmXSsv+z1d6JRIIQqVmjk
-  artifact: $(APPVEYOR_BUILD_FOLDER)\build\Inviwo-v0.9.9.1.exe
-  draft: false                     # tell AppVeyor to create a “draft” release so you can perform any final checks before making it public.
-  prerelease: false
-  on:
-    appveyor_repo_tag: true        # deploy on tag push only
+# deploy:
+  # release: inviwo-v$(appveyor_build_version)
+  # description: 'Release description'
+  # provider: GitHub
+  # auth_token:
+    # secure: VuweHWHk/EiUGGXnRmahl1KSF8EzGKsWDsdk1TD7OPvTmXSsv+z1d6JRIIQqVmjk
+  # artifact: $(APPVEYOR_BUILD_FOLDER)\build\Inviwo-v0.9.9.1.exe
+  # draft: false                     # tell AppVeyor to create a “draft” release so you can perform any final checks before making it public.
+  # prerelease: false
+  # on:
+    # appveyor_repo_tag: true        # deploy on tag push only
