@@ -16,7 +16,7 @@ before_install:
   - '[ "$TRAVIS_OS_NAME" != osx ] || brew update && brew upgrade'
 
 install:
-  - export CXX=${COMPILER}
+  - export CXX="${COMPILER}"
   - "${CXX} --version"
   - JOBS=2
   - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
@@ -46,12 +46,15 @@ before_script:
 script:
   - cmake --build . --target ${BUILD_TARGET} -- -j${JOBS}
 
+before_deploy:
+  - export DMG_FILE_NAME=$(find $TRAVIS_BUILD_DIR/build -iname '*.dmg')
+
 deploy:
   provider: releases
   skip_cleanup: true
   api_key:
     secure: HWgj/X81zqS9K5sIAzCZ4c7E3uUUqYdKMfPQY7IcvXrI4IuZ1hrybfE6TZCze5Ogy5OCkFDBMmbLZMiCYWJ74MN9brTuXc4PCbJULqr19MgdvGBDLOBI3q8BLFW43evPgW9++zshBlcgOVZkrI4qxdY2MbwnChEVd70r6Ai+0L8ityGjHenEZ2DmbFhkrnCPXSHMqUVFJqZuPdnGkb4AqL7MQ8fWfcoC2nrb0SR99mVaqN9Xj7hdXlqAfHqM0BjIy08saXVo40ZRqq4p+q0pUIoG7e0ttL/0CIdt+oG8YwQxdy4ETwQ8udRdkyNhA/X1GKkIc4T5d2Off7jbQxkawPHiwa6poxV0hhgU97BPT3rHiEnCSqLJCZSZ4/ScS78DJ0hkdte2Qg8Pa04+plAB81n6IWNviF1gdEU89LdC9xdJIUO2+J1qGlgAIT9Me+S4wCx6Hb/tbObrt1nD6YJn5qymP8EwpGNc12InM2xBYhcT9tAKSsebqz2XZSZkx5NHKTqzNu0wpQOimaQfw/EvddK73xZvIMbmFOerpSVNzw4BQHAFgeDsoPhea7/He6i5OZBo+DZmo3KiWKaRBZqbFy/7tk8KNwRf6Jj/gZtxJLU3w2gml+Rd4nqwCuxHZrIbCaIUDFgAVn8TtCn+01w3G5beMGtgMMO/rf6MZg/Rufs=
-  file: $TRAVIS_BUILD_DIR/build/Inviwo-v0.9.9.1.dmg
+  file: "${DMG_FILE_NAME}"
   on:
     repo: onc/inviwo
     tags: true
