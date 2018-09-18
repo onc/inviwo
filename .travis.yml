@@ -47,7 +47,7 @@ script:
   - cmake --build . --target ${BUILD_TARGET} -- -j${JOBS}
 
 before_deploy:
-  - export DMG_FILE_NAME=$(find $TRAVIS_BUILD_DIR/build -iname '*.dmg')
+  - export DMG_FILE_NAME=$(find $TRAVIS_BUILD_DIR/build -maxdepth 1 -iname 'Inviwo*.dmg')
 
 deploy:
   provider: releases
