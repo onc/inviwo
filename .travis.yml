@@ -40,6 +40,7 @@ deploy:
   api_key:
     secure: HWgj/X81zqS9K5sIAzCZ4c7E3uUUqYdKMfPQY7IcvXrI4IuZ1hrybfE6TZCze5Ogy5OCkFDBMmbLZMiCYWJ74MN9brTuXc4PCbJULqr19MgdvGBDLOBI3q8BLFW43evPgW9++zshBlcgOVZkrI4qxdY2MbwnChEVd70r6Ai+0L8ityGjHenEZ2DmbFhkrnCPXSHMqUVFJqZuPdnGkb4AqL7MQ8fWfcoC2nrb0SR99mVaqN9Xj7hdXlqAfHqM0BjIy08saXVo40ZRqq4p+q0pUIoG7e0ttL/0CIdt+oG8YwQxdy4ETwQ8udRdkyNhA/X1GKkIc4T5d2Off7jbQxkawPHiwa6poxV0hhgU97BPT3rHiEnCSqLJCZSZ4/ScS78DJ0hkdte2Qg8Pa04+plAB81n6IWNviF1gdEU89LdC9xdJIUO2+J1qGlgAIT9Me+S4wCx6Hb/tbObrt1nD6YJn5qymP8EwpGNc12InM2xBYhcT9tAKSsebqz2XZSZkx5NHKTqzNu0wpQOimaQfw/EvddK73xZvIMbmFOerpSVNzw4BQHAFgeDsoPhea7/He6i5OZBo+DZmo3KiWKaRBZqbFy/7tk8KNwRf6Jj/gZtxJLU3w2gml+Rd4nqwCuxHZrIbCaIUDFgAVn8TtCn+01w3G5beMGtgMMO/rf6MZg/Rufs=
   file: "${DMG_FILE_NAME}"
+  overwrite: true # true to overwrite files in an existing release; default is false which will fail deployment if the release already exists on GitHub.
   on:
     repo: onc/inviwo
     tags: true

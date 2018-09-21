@@ -30,6 +30,7 @@ deploy:
     secure: VuweHWHk/EiUGGXnRmahl1KSF8EzGKsWDsdk1TD7OPvTmXSsv+z1d6JRIIQqVmjk
   artifact: $(APPVEYOR_BUILD_FOLDER)\build\*.exe
   draft: false                     # tell AppVeyor to create a “draft” release so you can perform any final checks before making it public.
+  force_update: true               # true to overwrite files in an existing release; default is false which will fail deployment if the release already exists on GitHub.
   prerelease: false
   on:
     appveyor_repo_tag: true        # deploy on tag push only
