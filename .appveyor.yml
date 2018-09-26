@@ -32,7 +32,7 @@ deploy:
   provider: GitHub
   auth_token:
     secure: VuweHWHk/EiUGGXnRmahl1KSF8EzGKsWDsdk1TD7OPvTmXSsv+z1d6JRIIQqVmjk
-  artifact: build\*.exe
+  artifact: Inviwo
   draft: false                     # tell AppVeyor to create a “draft” release so you can perform any final checks before making it public.
   force_update: true               # true to overwrite files in an existing release; default is false which will fail deployment if the release already exists on GitHub.
   prerelease: false
