@@ -17,6 +17,7 @@ before_install:
 install:
   - brew install cmake || brew upgrade cmake
   - cmake --version
+  - brew install ninja || brew upgrade ninja
   - brew install qt
   - export PATH="/usr/local/opt/qt/bin:$PATH"
 
