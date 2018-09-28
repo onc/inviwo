@@ -4,6 +4,10 @@ sudo: false
 notifications:
   email: false
 
+cache:
+  directories:
+    - build
+
 matrix:
   include:
   - env: BUILD_TYPE=Release BUILD_TARGET=package JOBS=2
