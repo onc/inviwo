@@ -6,6 +6,9 @@ notifications:
 
 cache: ccache
 
+git:
+  depth: 1
+
 matrix:
   include:
   - env: BUILD_TYPE=Release BUILD_TARGET=package JOBS=2
@@ -17,9 +20,10 @@ before_install:
   - brew upgrade
 
 install:
-  - brew install cmake || brew upgrade cmake
+  - brew install cmake
   - cmake --version
-  - brew install ninja || brew upgrade ninja
+  - brew install ninja
+  - ninja --version
   - brew install qt
   - export PATH="/usr/local/opt/qt/bin:$PATH"
   - brew install ccache
@@ -28,7 +32,6 @@ install:
 before_script:
   - find /usr/local/opt/python3/Frameworks/Python.framework/Versions -iname '*.app' | xargs rm -rf
   - cd "${TRAVIS_BUILD_DIR}"
-  - git submodule update --init --recursive
   - mkdir build && cd build
   - cmake .. -G "Ninja" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DIVW_PACKAGE_PROJECT=ON -DIVW_PACKAGE_INSTALLER=ON -DIVW_UNITTESTS=OFF -DIVW_UNITTESTS_RUN_ON_BUILD=OFF
   - cmake .. -G "Ninja" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DIVW_PACKAGE_PROJECT=ON -DIVW_PACKAGE_INSTALLER=ON -DIVW_UNITTESTS=OFF -DIVW_UNITTESTS_RUN_ON_BUILD=OFF
